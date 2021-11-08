@@ -1,18 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { API_URL, API_KEY, IMAGE_BASE_URL } from '../../Config';
 import MainImage from './Sections/MainImage'
 import GridCards from '../commons/GridCards';
-import { Row } from 'antd';
+import { Row, Typography } from 'antd';
+import axios from 'axios';
+
+const { Title } = Typography;
 
 function LandingPage() {
 
+    const  buttonRef = useRef(null);
+
     const [Movies, setMovies] = useState([])
     const [MainMovieImage, setMainMovieImage] = useState(null)
-    const [CurrentPage, setCurrentPage] = useState()
+    const [CurrentPage, setCurrentPage] = useState(0)
+    const [Loading, setLoading] = useState(true)
+
     useEffect(() => {
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
         fetchMovies(endpoint)
-        
+    }, [])
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
     }, [])
 
     const fetchMovies = (endpoint) => {
@@ -23,17 +33,49 @@ function LandingPage() {
             setMovies([...Movies, ...response.results])
             setMainMovieImage(response.results[0])
             setCurrentPage(response.page)
-        })
+        }, setLoading(false))
+        .catch(error => console.log('Error:', error))
     }
 
     const loadMoreItems = () => {
+        setLoading(true);
+        console.log('CurrentPage', CurrentPage);
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage+1}`;
-        fetchMovies(endpoint)
+        fetchMovies(endpoint);
+        movieVideo(1);
 
     }
 
+    const handleScroll = () => {
+        const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+        
+        const body = document.body;
+        const html = document.documentElement;
+        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, 
+            html.clientHeight, html.scrollHeight, html.offsetHeight);
+        const windowBottom = windowHeight + window.pageYOffset;
+
+        if (windowBottom >= docHeight - 1) {
+            console.log('clicked')
+
+            buttonRef.current.click();
+        }
+    }
+    const axiosConfig = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "text/plain",
+        },
+    };
     const movieVideo = (movieId) => {
-        const endpoint = `${API_URL}movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
+        const endpoint = `${API_URL}movie/${movieId}/videos?api_key=${API_KEY}&append_to_response=videos`;
+        console.log(endpoint)
+        axios.get(endpoint, axiosConfig)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch(error => console.log(error))
     }
 
     return (
@@ -47,7 +89,7 @@ function LandingPage() {
                 />
             }
             <div style= {{ width:'85%', margin:'1rem auto' }}>
-                <h2>Movies by latest</h2>
+                <Title level={2}> Movies by latest </Title>
                 <hr />
                 {/* Moive Grid Cards */}
                 <Row gutter={[16, 16]}>
@@ -64,11 +106,16 @@ function LandingPage() {
                     ))}
                 </Row>
 
+                {Loading &&
+                    <div>Loading...</div>}
+                
+                <br />
+
+                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                    <button ref={buttonRef} className="loadMore" onClick={loadMoreItems}>Load More</button>
+                </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center'}}>
-                <button onClick={loadMoreItems}> Load More</button>
-            </div>
         </div>
 
         
