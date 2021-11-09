@@ -42,7 +42,7 @@ function LandingPage() {
         console.log('CurrentPage', CurrentPage);
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage+1}`;
         fetchMovies(endpoint);
-        movieVideo(1);
+        movieVideo(580489);
 
     }
 
@@ -61,19 +61,12 @@ function LandingPage() {
             buttonRef.current.click();
         }
     }
-    const axiosConfig = {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "text/plain",
-        },
-    };
+    // 노마드코더 영상 참조해서 만들 것
     const movieVideo = (movieId) => {
-        const endpoint = `${API_URL}movie/${movieId}/videos?api_key=${API_KEY}&append_to_response=videos`;
-        console.log(endpoint)
-        axios.get(endpoint, axiosConfig)
-        .then(response => response.json())
+        const endpoint = `${API_URL}movie/${movieId}/videos?api_key=${API_KEY}`;
+        axios.get(endpoint)
         .then(response => {
-            console.log(response.data)
+            console.log(response)
         })
         .catch(error => console.log(error))
     }
@@ -95,6 +88,7 @@ function LandingPage() {
                 <Row gutter={[16, 16]}>
                     {Movies && Movies.map((movie, index) => (
                         <React.Fragment key={index}>
+                            <div onMouseOver={() => console.log('hover')}>
                             <GridCards 
                                 landingPage
                                 image={movie.poster_path ? 
@@ -102,6 +96,7 @@ function LandingPage() {
                                 movieId={movie.id}
                                 movieName={movie.original_title}
                             />
+                            </div>
                         </React.Fragment>
                     ))}
                 </Row>
