@@ -3,8 +3,7 @@ import LeftMenu from './Sections/LeftMenu';
 import RightMenu from './Sections/RightMenu';
 import { Drawer, Button, Icon } from 'antd';
 import './Sections/Navbar.css';
-const Logo = require('../../../assets/images/Logo.png');
-
+import Logo from '../../../assets/images/Logos.png';
 function NavBar() {
   const [visible, setVisible] = useState(false)
 

@@ -15,7 +15,7 @@ class CreateFavoritesTable extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->cascade('onDelete');
+            $table->foreignId('user_id')->constrained()->cascade('onUpdate')->cascade('onDelete');
             $table->string('movieId');
             $table->string('movieTitle');
             $table->string('moviePost');

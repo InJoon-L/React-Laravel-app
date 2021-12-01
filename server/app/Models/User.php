@@ -44,6 +44,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function favorites() {
+        return $this->belongsToMany(Favorite::class);
+    }
+
     public function getJWTIdentifier() {
         return $this->getKey();
     }
