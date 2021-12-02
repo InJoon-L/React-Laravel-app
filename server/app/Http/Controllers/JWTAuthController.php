@@ -16,7 +16,8 @@ class JWTAuthController extends Controller
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|string|min:8|max:255'
+            'password' => 'required|string|min:8|max:255',
+            'lastname' => 'required|string|max:100',
         ]);
 
         if ($validator->fails()) {
@@ -55,15 +56,18 @@ class JWTAuthController extends Controller
             return response()->json(['error' => 'Unuthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token, $req->email);
     }
 
-    protected function respondWithToken($token) {
+    protected function respondWithToken($token, $email) {
+        $user_id = User::where('email', $email)->get()->id();
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
-        ]);
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'loginSuccess' => true,
+            'userId' => $user_id,
+        ], 200);
     }
 
     public function refresh() {
