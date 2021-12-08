@@ -26,7 +26,7 @@ function Favorite(props) {
 
         
 
-        Axios.post('/api/favorite/favoriteNumber', variables)        
+        Axios.post('http://127.0.0.1:8000/api/favorite/favoriteNumber', variables)        
         .then(response => {
             setFavoriteNumber(response.data.favoriteNumber)
             if(response.data.success) {
@@ -37,7 +37,7 @@ function Favorite(props) {
         })
 
 
-        Axios.post('/api/favorite/favorited', variables)        
+        Axios.post('http://127.0.0.1:8000/api/favorite/favorited', variables)        
         .then(response => {
             if(response.data.success) {
                 setFavorited(response.data.favorited)
@@ -51,7 +51,7 @@ function Favorite(props) {
 
     const onClickFavorite = () => {
         if(Favorited) {
-            Axios.post('/api/favorite/removeFromFavorite', variables)
+            Axios.post('http://127.0.0.1:8000/api/favorite/removeFromFavorite', variables)
             .then(response => {
                 if(response.data.success) {
                     setFavoriteNumber(FavoriteNumber - 1);
@@ -61,7 +61,7 @@ function Favorite(props) {
                 }
             })
         } else {
-            Axios.post('/api/favorite/addToFavorite', variables)
+            Axios.post('http://127.0.0.1:8000/api/favorite/addToFavorite', variables)
             .then(response => {
                 if(response.data.success) {
                     setFavoriteNumber(FavoriteNumber + 1);

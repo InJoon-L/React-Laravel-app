@@ -18,7 +18,7 @@ function FavoritePage() {
     }, [])
     
     const fetchFavoredMovie = () => {
-        Axios.post('/api/favorite/getFavoredMovie', { userFrom: localStorage.getItem('userId')})
+        Axios.post('http://127.0.0.1:8000/api/favorite/getFavoredMovie', { userFrom: localStorage.getItem('userId')})
         .then(response => {
             if(response.data.success) {
                 console.log(response.data)
@@ -35,7 +35,7 @@ function FavoritePage() {
             userFrom
         }
 
-        Axios.post('/api/favorite/removeFromFavorite', variables)
+        Axios.post('http://127.0.0.1:8000/api/favorite/removeFromFavorite', variables)
         .then(response => {
             if(response.data.success) { 
                 fetchFavoredMovie()

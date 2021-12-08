@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JWTAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix("users")->group(function () {
     Route::get("/auth", [])->name("");
-    Route::post("/register", [])->name("");
-    Route::post("/login", [])->name("");
+    Route::post("/register", [JWTAuthController::class, 'register']);
+    Route::post("/login", [JWTAuthController::class, 'login']);
     Route::get("/logout", [])->name("");
 });
 

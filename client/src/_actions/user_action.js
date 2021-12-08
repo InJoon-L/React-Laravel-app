@@ -8,7 +8,7 @@ import {
 import { USER_SERVER } from '../components/Config.js';
 
 export function registerUser(dataToSubmit){
-    const request = axios.post(`${USER_SERVER}/register`,dataToSubmit)
+    const request = axios.post(`${USER_SERVER}/register`, dataToSubmit)
         .then(response => response.data);
     
     return {
@@ -18,7 +18,7 @@ export function registerUser(dataToSubmit){
 }
 
 export function loginUser(dataToSubmit){
-    const request = axios.post(`${USER_SERVER}/login`,dataToSubmit)
+    const request = axios.post(`${USER_SERVER}/login`, dataToSubmit)
                 .then(response => response.data);
 
     return {
