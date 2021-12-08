@@ -47,6 +47,7 @@ function LoginPage(props) {
               console.log(response)
               if (response.payload.loginSuccess) {
                 window.localStorage.setItem('userId', response.payload.userId);
+                window.localStorage.setItem('token', response.payload.access_token);
                 if (rememberMe === true) {
                   window.localStorage.setItem('rememberMe', values.id);
                 } else {

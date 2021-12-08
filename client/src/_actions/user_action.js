@@ -28,7 +28,14 @@ export function loginUser(dataToSubmit){
 }
 
 export function auth(){
-    const request = axios.get(`${USER_SERVER}/auth`)
+    let userId = 0;
+    if (window.localStorage.getItem('userId')) {
+        userId = window.localStorage.getItem('userId')
+    }
+    let val = {
+        'id' : userId
+    }
+    const request = axios.post(`${USER_SERVER}/auth`, val)
     .then(response => response.data);
 
     return {
@@ -38,7 +45,13 @@ export function auth(){
 }
 
 export function logoutUser(){
-    const request = axios.get(`${USER_SERVER}/logout`)
+    let token = window.localStorage.getItem('token');
+    
+    const request = axios.get(`${USER_SERVER}/logout`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
     .then(response => response.data);
 
     return {

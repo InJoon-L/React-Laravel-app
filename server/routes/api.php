@@ -20,10 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix("users")->group(function () {
-    Route::get("/auth", [])->name("");
+    Route::get("/user", [JWTAuthController::class, 'user']);
+    Route::post("/auth", [JWTAuthController::class, 'auth']);
     Route::post("/register", [JWTAuthController::class, 'register']);
     Route::post("/login", [JWTAuthController::class, 'login']);
-    Route::get("/logout", [])->name("");
+    Route::get("/logout", [JWTAuthController::class, 'logout']);
 });
 
 Route::prefix("favorite")->group(function () {

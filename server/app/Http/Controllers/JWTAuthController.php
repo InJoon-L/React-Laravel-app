@@ -12,6 +12,19 @@ class JWTAuthController extends Controller
         return response()->json(auth('api')->user());
     }
 
+    public function auth(Request $req) {
+        $user = User::find($req->id);
+        return response()->json([
+            '_id' => $user->id,
+            'isAdmin' => $user->role == 0 ? false : true,
+            'isAuth' => true,
+            'email' => $user->email,
+            'name' => $user->name,
+            'role' => $user->role,
+            'image' => $user->image
+        ]);
+    }
+
     public function register(Request $req) {
         $validator = Validator::make($req->all(), [
             'name' => 'required|string|max:100',
@@ -50,7 +63,6 @@ class JWTAuthController extends Controller
         }
 
         $credentials = $req->all();
-
         if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unuthorized'], 401);
         }
@@ -59,7 +71,7 @@ class JWTAuthController extends Controller
     }
 
     protected function respondWithToken($token, $email) {
-        $user_id = User::where('email', $email)->get()->id();
+        $user_id = User::where('email', $email)->first()->id;
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
