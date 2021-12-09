@@ -40,6 +40,7 @@ function FavoritePage() {
             if(response.data.success) { 
                 fetchFavoredMovie()
             } else {
+                console.log(response)
                 alert('리스트에서 지우는데 실패했습니다.')
             }
         })
@@ -63,7 +64,7 @@ function FavoritePage() {
             </Popover>
 
             <td>{favorite.movieRunTime} mins</td>
-            <td><Button onClick={() => onClickDelete(favorite.movieId, favorite.userFrom)}> Remove </Button></td>
+            <td><Button onClick={() => onClickDelete(favorite.movieId, favorite.user_id)}> Remove </Button></td>
         </tr>
     })
 

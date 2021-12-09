@@ -66,7 +66,7 @@ function LandingPage() {
         const endpoint = `${API_URL}movie/${movieId}/videos?api_key=${API_KEY}`;
         axios.get(endpoint)
         .then(response => {
-            console.log(response)
+            console.log('movie :::', response)
         })
         .catch(error => console.log(error))
     }

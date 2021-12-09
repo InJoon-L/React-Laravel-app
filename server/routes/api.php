@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\JWTAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +29,11 @@ Route::prefix("users")->group(function () {
 });
 
 Route::prefix("favorite")->group(function () {
-    Route::post("/favoriteNumber", [])->name("");
-    Route::post("/favorited", [])->name("");
-    Route::post("/removeFromFavorite", [])->name("");
-    Route::post("/addToFavorite", [])->name("");
-    Route::post("/getFavoredMovie", [])->name("");
+    Route::post("/favoriteNumber", [FavoriteController::class, 'favoriteNumber']);
+    Route::post("/favorited", [FavoriteController::class, 'favorited']);
+    Route::post("/removeFromFavorite", [FavoriteController::class, 'removeFromFavorite']);
+    Route::post("/addToFavorite", [FavoriteController::class, 'addToFavorite']);
+    Route::post("/getFavoredMovie", [FavoriteController::class, 'getFavoredMovie']);
 });
 
 Route::prefix("comment")->group(function () {
