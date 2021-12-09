@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\JWTAuthController;
 use Illuminate\Http\Request;
@@ -37,15 +38,9 @@ Route::prefix("favorite")->group(function () {
 });
 
 Route::prefix("comment")->group(function () {
-    Route::post("/example", [])->name("");
-});
-
-Route::prefix("like")->group(function () {
-    Route::post("/example", [])->name("");
-});
-
-Route::prefix("unlike")->group(function () {
-    Route::post("/example", [])->name("");
+    Route::post("/saveComment", [CommentController::class, 'saveComment']);
+    Route::post("/updateComment", [CommentController::class, 'updateComment']);
+    Route::get("/getComments/{movieId}", [CommentController::class, 'getComments']);
 });
 
 Route::get('unauthorized', function() {

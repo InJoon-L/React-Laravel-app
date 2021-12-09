@@ -5,6 +5,8 @@ import MovieInfo from './Sections/MovieInfo';
 import GridCards from '../commons/GridCards'
 import { Row } from 'antd'
 import Favorite from './Sections/Favorite'
+import Comment from './Sections/Comment'
+import axios from 'axios';
 
 function MovieDetail(props) {
 
@@ -12,7 +14,8 @@ function MovieDetail(props) {
     const [Movie, setMovie] = useState([])
     const [Casts, setCasts] = useState([])
     const [ActorToggle, setActorToggle] = useState(false)
-    
+    const [Comments, setComments] = useState([])
+
     useEffect(() => {
 
         let endpointCrew = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`
@@ -31,7 +34,33 @@ function MovieDetail(props) {
             console.log(response)
             setCasts(response.cast)
         })
+
+        axios.get('http://127.0.0.1:8000/api/comment/getComments/' + movieId)
+        .then(res => {
+            if (res.data.success) {
+                setComments(res.data.comments)
+                console.log(res.data)
+            } else {
+                alert('코멘트 정보를 가져오는 것을 실패하였습니다.')
+            }
+        })
     }, [])
+
+    const refreshFunction = (newCommnet, updated) => {
+        // setComments(Comments.concat(newCommnet))
+
+        // if (updated) {
+            axios.get('http://127.0.0.1:8000/api/comment/getComments/' + movieId)
+            .then(res => {
+                if (res.data.success) {
+                    setComments(res.data.comments)
+                    console.log(res.data)
+                } else {
+                    alert('코멘트 정보를 가져오는 것을 실패하였습니다.')
+                }
+            })
+        // }
+    }
 
     const toggleActorView = () => {
         setActorToggle(!ActorToggle)
@@ -59,8 +88,12 @@ function MovieDetail(props) {
                     movie={ Movie }
                 />
                 <br />
+
+                {/* Comment */}
+                <Comment refreshFunction={refreshFunction} commentLists={Comments} movieId={movieId} />
+
                 {/* Actors Grid */}
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem' }}>
+                {/* <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem' }}>
                     <button onClick={toggleActorView}> Toggle Actor View</button>
                 </div>
                 {ActorToggle &&
@@ -75,7 +108,7 @@ function MovieDetail(props) {
                             </React.Fragment>
                         ))}
                     </Row>
-                }
+                } */}
             </div>
             
         </div>
